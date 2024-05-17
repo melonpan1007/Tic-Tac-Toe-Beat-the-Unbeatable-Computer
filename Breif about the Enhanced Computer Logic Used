@@ -1,0 +1,73 @@
+## Breif about the Enhanced Computer Logic Used 
+
+ the `computersMove` function step by step:
+
+
+// Function for computer's move
+void computersMove(char *spaces, char computer) {
+    // Priority 1: Win if possible
+    for (int i = 0; i < 9; i++) {
+        if (spaces[i] == ' ') {
+            spaces[i] = computer;
+            if (checkWinner(spaces, computer, ' ')) { // Simulate move and check for win
+                return; // If winning move found, make the move and return
+            }
+            spaces[i] = ' '; // Undo the simulated move
+        }
+    }
+
+
+1. **Priority 1 - Win if possible:** In this section, the computer iterates through each empty space on the board (`spaces`). For each empty space, it simulates placing its marker (`computer`) and checks if this move results in a win using the `checkWinner` function. If a winning move is found, the computer makes that move and returns immediately to end its turn.
+
+
+    // Priority 2: Block opponent's win if possible
+    for (int i = 0; i < 9; i++) {
+        if (spaces[i] == ' ') {
+            spaces[i] = 'X'; // Simulate opponent's move
+            if (checkWinner(spaces, 'X', computer)) { // Simulate and check for opponent's win
+                spaces[i] = computer; // Make the move to block the opponent
+                return;
+            }
+            spaces[i] = ' '; // Undo the simulated move
+        }
+    }
+
+
+2. **Priority 2 - Block opponent's win if possible:** If the computer cannot win on its next move, it checks if the opponent (assumed to be represented by 'X') could win in their next move. It iterates through each empty space, simulating the opponent's move in each one, and checks if this move results in a win for the opponent. If such a winning move is detected, the computer blocks it by placing its marker (`computer`) in that space and returns to end its turn.
+
+
+    // Priority 3: Play the center if available
+    if (spaces[4] == ' ') {
+        spaces[4] = computer;
+        return;
+    }
+
+
+3. **Priority 3 - Play the center if available:** If neither the computer nor the opponent can win immediately, the computer checks if the center space (index 4) is available. If it is empty, the computer places its marker (`computer`) in the center space and returns to end its turn.
+
+
+    // Priority 4: Play a corner if available
+    int corners[] = {0, 2, 6, 8};
+    for (int corner : corners) {
+        if (spaces[corner] == ' ') {
+            spaces[corner] = computer;
+            return;
+        }
+    }
+
+
+4. **Priority 4 - Play a corner if available:** If the center space is already taken, the computer attempts to occupy one of the corner positions. It checks each corner position (indices 0, 2, 6, and 8) and places its marker (`computer`) in the first available corner space, returning to end its turn.
+
+
+    // Priority 5: Play any empty space
+    for (int i = 0; i < 9; i++) {
+        if (spaces[i] == ' ') {
+            spaces[i] = computer;
+            return;
+        }
+    }
+
+
+5. **Priority 5 - Play any empty space:** If none of the above conditions are met (i.e., all priority moves are unavailable), the computer resorts to playing any remaining empty space on the board. It iterates through all spaces and places its marker (`computer`) in the first available empty space, returning to end its turn.
+
+This prioritized strategy ensures that the computer plays competitively and strategically, aiming to win the game while also preventing the opponent from winning. If neither a win nor a block is possible, the computer aims to secure strategically advantageous positions on the board.
