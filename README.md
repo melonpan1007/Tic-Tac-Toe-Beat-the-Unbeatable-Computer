@@ -3,16 +3,15 @@
 This project is a console-based Tic Tac Toe game implemented in C++. The game allows a human player to challenge a computer with advanced decision-making logic designed to be very difficult to beat.
 
 ## How to Play
-
-      |     |     
-  1   |  2  |  3    
-_____ |____ |_____
-      |     |     
-   4  |  5  |  6    
-_____ |____ |_____
-      |     |     
-  7   |   8 |   9   
-      |     |     
+ |     |     
+1 | 2 | 3
+||_____
+| |
+4 | 5 | 6
+||_____
+| |
+7 | 8 | 9
+| |
 
 
 1. The game board is displayed with numbered positions from 1 to 9.
