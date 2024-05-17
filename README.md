@@ -4,7 +4,7 @@ This project is a console-based Tic Tac Toe game implemented in C++. The game al
 
 ## How to Play
 
-
+<pre>
      |     |     
   1  |  2  |  3  
 _____|_____|_____
@@ -14,6 +14,7 @@ _____|_____|_____
      |     |     
   7  |  8  |  9  
      |     |     
+</pre>
 
 
 
