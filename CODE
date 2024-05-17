@@ -1,0 +1,173 @@
+#include<iostream>
+
+// Function prototypes
+void drawBoard(char *spaces);
+void playersMove(char *spaces, char player);
+void computersMove(char *spaces, char computer);
+bool checkWinner(char *spaces, char player, char computer);
+bool checkTie(char *spaces);
+
+// Function to draw the Tic Tac Toe board
+void drawBoard(char *spaces){
+    std::cout << "     |     |     " << '\n';
+    std::cout << " " << spaces[0] << "   |  " << spaces[1] << "  |   " << spaces[2] << "  " << '\n';
+    std::cout << "_____|_____|_____" << '\n';
+    std::cout << "     |     |     " << '\n';
+    std::cout << " " << spaces[3] << "   |  " << spaces[4] << "  |   " << spaces[5] << "  " << '\n';
+    std::cout << "_____|_____|_____" << '\n';
+    std::cout << "     |     |     " << '\n';
+    std::cout << " " << spaces[6] << "   |  " << spaces[7] << "  |   " << spaces[8] << "  " << '\n';
+    std::cout << "     |     |     " << '\n';
+    std::cout << '\n';
+}
+
+// Function for player's move
+void playersMove(char *spaces, char player){
+    int number;
+    do{
+        std::cout << "Enter a number between (1-9): ";
+        std::cin >> number;
+        number--; // Adjust index since array starts from 0
+        if(spaces[number] == ' '){ // Check if the space is empty
+            spaces[number] = player; // Place player's marker
+            break;
+        } 
+        else {
+            std::cout << "Invalid move. Try again.\n";
+        }
+    } while(true);
+}
+
+// Function for computer's move
+void computersMove(char *spaces, char computer) {
+    // Priority 1: Win if possible
+    for (int i = 0; i < 9; i++) {
+        if (spaces[i] == ' ') {
+            spaces[i] = computer;
+            if (checkWinner(spaces, computer, ' ')) { // Simulate move and check for win
+                return; // If winning move found, make the move and return
+            }
+            spaces[i] = ' '; // Undo the simulated move
+        }
+    }
+
+    // Priority 2: Block opponent's win if possible
+    for (int i = 0; i < 9; i++) {
+        if (spaces[i] == ' ') {
+            spaces[i] = 'X'; // Simulate opponent's move
+            if (checkWinner(spaces, 'X', computer)) { // Simulate and check for opponent's win
+                spaces[i] = computer; // Make the move to block the opponent
+                return;
+            }
+            spaces[i] = ' '; // Undo the simulated move
+        }
+    }
+
+    // Priority 3: Play the center if available
+    if (spaces[4] == ' ') {
+        spaces[4] = computer;
+        return;
+    }
+
+    // Priority 4: Play a corner if available
+    int corners[] = {0, 2, 6, 8};
+    for (int corner : corners) {
+        if (spaces[corner] == ' ') {
+            spaces[corner] = computer;
+            return;
+        }
+    }
+
+    // Priority 5: Play any empty space
+    for (int i = 0; i < 9; i++) {
+        if (spaces[i] == ' ') {
+            spaces[i] = computer;
+            return;
+        }
+    }
+}
+
+// Function to check for a winner
+bool checkWinner(char *spaces, char player, char computer) {
+    // Check rows
+    for (int i = 0; i < 9; i += 3) {
+        if (spaces[i] == player && spaces[i + 1] == player && spaces[i + 2] == player) {
+            return true;
+        }
+    }
+
+    // Check columns
+    for (int i = 0; i < 3; i++) {
+        if (spaces[i] == player && spaces[i + 3] == player && spaces[i + 6] == player) {
+            return true;
+        }
+    }
+
+    // Check diagonals
+    if ((spaces[0] == player && spaces[4] == player && spaces[8] == player) ||
+        (spaces[2] == player && spaces[4] == player && spaces[6] == player)) {
+        return true;
+    }
+
+    return false;
+}
+
+// Function to check for a tie
+bool checkTie(char *spaces) {
+    for (int i = 0; i < 9; i++) {
+        if (spaces[i] == ' ') {
+            return false; // If any empty space is found, game is not tied
+        }
+    }
+    return true; // If no empty space is found, game is tied
+}
+
+// Main function
+int main(){
+    char spaces[9] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+    char player = 'X';
+    char computer = 'O';
+    bool running = true;
+    
+    drawBoard(spaces); // Display the initial board
+
+    while(running){
+        // Player's move
+        playersMove(spaces, player);
+        drawBoard(spaces); // Display the board after player's move
+
+        // Check if player wins
+        if(checkWinner(spaces, player, computer)){
+            std::cout << "Congratulations! You win!" << std::endl;
+            running = false;
+            break;
+        }
+
+        // Check for a tie
+        if(checkTie(spaces)){
+            std::cout << "It's a Tie!" << std::endl;
+            running = false;
+            break;
+        }
+
+        // Computer's move
+        computersMove(spaces, computer);
+        drawBoard(spaces); // Display the board after computer's move
+
+        // Check if computer wins
+        if(checkWinner(spaces, computer, player)){
+            std::cout << "Computer wins!" << std::endl;
+            running = false;
+            break;
+        }
+
+        // Check for a tie again after computer's move
+        if(checkTie(spaces)){
+            std::cout << "It's a Tie!" << std::endl;
+            running = false;
+            break;
+        }
+    }
+
+    return 0;
+}
