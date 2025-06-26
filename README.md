@@ -1,7 +1,7 @@
 
 ## Tic Tac Toe: Beat the Unbeatable Computer
 
-This project is a console-based Tic Tac Toe game implemented in C++. The game allows a human player to challenge a computer with advanced decision-making logic designed to be very difficult to beat.
+This project is a console-based Tic Tac Toe game implemented in C++ & Python. The game allows a human player to challenge a computer with advanced decision-making logic designed to be very difficult to beat.
 
 ## How to Play
 
